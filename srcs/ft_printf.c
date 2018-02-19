@@ -680,32 +680,34 @@ void		for_symbol(t_flags *help)
 	free(str);
 }
 
-void		findout(char c, va_list args, t_flags *help, char *new)
+int		findout(char c, va_list args, t_flags *help, char *new)
 {
-	if (new == NULL)
-		return ;
 	if (c == '%')
 		for_symbol(help);
-	else if (c == 'i' || c == 'd' || c == 'D')
+	if (c == 'i' || c == 'd' || c == 'D')
 		for_idD(c, args, help);
-	else if (c == 's')
+	if (c == 's')
 		for_s(args, help);
-	else if (c == 'p')
+	if (c == 'p')
 		for_p(args, help);
-	else if (c == 'o' || c == 'O')
+	if (c == 'o' || c == 'O')
 		for_oO(c, args, help);
-	else if (c == 'u' || c == 'U')
+	if (c == 'u' || c == 'U')
 		for_uU(c, args, help);
-	else if (c == 'x' || c == 'X')
+	if (c == 'x' || c == 'X')
 		for_xX(c, args, help);
-	else if (c == 'c')
+	if (c == 'c')
 		for_c(0, args, help);
-	else if (c == 'C')
+	if (c == 'C')
 		for_Clc(args, help);
-	else if (c == 'S')
+	if (c == 'S')
 	 	for_Sls(args, help);
-	if (new != NULL)
+	if (help->result == -1)
+	{
 		free(new);
+		return (1);
+	}
+	return (0);
 }
 
 int			forsize(char *str, int i, t_flags *help)
@@ -800,30 +802,28 @@ int			fornb(char *str, int i, t_flags *help, va_list args)
 	return (i);
 }
 
-int			flags(char *new, va_list args, t_flags *help)
+int			flags(char *str, va_list args, t_flags *help)
 {
 	int i;
 
 	i = 0;
-	if (new == NULL)
-		return (i);
-	while (new[i])
+	while (str[i])
 	{
-		if (new[i] == '0')
+		if (str[i] == '0')
 			help->zero = '0';
-		else if ((new[i] >= '1' && new[i] <= '9') || new[i] == '*')
-			i = fornb(new, i, help, args);
-		else if (new[i] == '.')
-			i = fordot(new, i, help, args);
-		else if (new[i] == '%' || new[i] == '-' || new[i] == '+'
-			|| new[i] == ' ' || new[i] == '#' || SIZE(new[i]))
-			i = flags_continue(new, i, help);
-		else if (!(CONV(new[i])))
+		else if ((str[i] >= '1' && str[i] <= '9') || str[i] == '*')
+			i = fornb(str, i, help, args);
+		else if (str[i] == '.')
+			i = fordot(str, i, help, args);
+		else if (str[i] == '%' || str[i] == '-' || str[i] == '+'
+			|| str[i] == ' ' || str[i] == '#' || SIZE(str[i]))
+			i = flags_continue(str, i, help);
+		else if (!(CONV(str[i])))
 			return (i + 1);
 		else
 		{
 			help->alarm = 1;
-			for_c(new[i], args, help);
+			for_c(str[i], args, help);
 			return (i + 1);
 		}
 		i++;
@@ -894,18 +894,19 @@ void		print_and_find(const char *format, va_list args, t_flags *help)
 		if (str[i] == '%')
 		{
 			new = if_char(help, new, str, i);
-			i += flags(new, args, help);
-			findout(str[i], args, help, new);
-			if (help->result == -1)
-				return ;
+			i += (new != NULL) ? flags(new, args, help) : 0;
+			if (findout(str[i], args, help, new))
+					return;
 		}
 		else
 		{
 			write(1, &str[i], 1);
-			help->result++;
+			help->result += 1;
 		}
 		i++;
 	}
+	if (new != NULL)
+		free(new);
 }
 
 int			ft_printf(const char *format, ...)
