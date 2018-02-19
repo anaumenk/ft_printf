@@ -427,24 +427,15 @@ void		for_uU(char c, va_list args, t_flags *help)
 	free(str);
 }
 
-char		*for_oO_continue(uint64_t x, char *str, int i, t_flags *help)
+void		for_oO_continue(char *str, t_flags *help)
 {
-	char		*hex;
-	uint64_t	nb;
-
-	hex = "01234567";
-	nb = x;
-	while (x > 0)
-	{
-		str[--i] = hex[x % 8];
-		x = x / 8;
-	}
 	if (help->hash == '#')
 		str = ft_strjoin(ft_strdup("0"), str);
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0 && help->minus != '-')
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
+		&& help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup("0"), str);
 	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
@@ -453,7 +444,9 @@ char		*for_oO_continue(uint64_t x, char *str, int i, t_flags *help)
 	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(str, ft_strdup(" "));
-	return (str);
+	ft_putstr(str);
+	help->result += ft_strlen(str);
+	free(str);
 }
 
 void		for_oO(char c, va_list args, t_flags *help)
@@ -462,7 +455,9 @@ void		for_oO(char c, va_list args, t_flags *help)
 	uint64_t	x;
 	int			i;
 	char		*str;
+	char		*hex;
 
+	hex = "01234567";
 	if (c == 'o')
 		x = for_ouxX_x(help, args);
 	if (c == 'O')
@@ -472,12 +467,15 @@ void		for_oO(char c, va_list args, t_flags *help)
 	while ((nb = nb / 8))
 		i++;
 	str = ft_strnew(i);
-	if (x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0 && help->dot_ex != 0)) && help->hash != '#')
+	if (x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0
+		&& help->dot_ex != 0)) && help->hash != '#')
 		str[0] = '0';
-	str = for_oO_continue(x, str, i, help);
-	ft_putstr(str);
-	help->result += ft_strlen(str);
-	free(str);
+	while (x > 0)
+	{
+		str[--i] = hex[x % 8];
+		x = x / 8;
+	}
+	for_oO_continue(str, help);
 }
 
 char		*for_p_continue(char *str, t_flags *help)
