@@ -221,30 +221,8 @@ void	putstr_c( char *s)
 	}
 }
 
-void		for_c(char c, va_list args, t_flags *help)
+char		*for_c_continue(t_flags *help, char *str)
 {
-	char x;
-	char *str;
-
-	if (help->alarm == 1)
-		x = c;
-	if (help->size == '0' && help->alarm != 1)
-		x = (unsigned char)va_arg(args, void*);
-	if (help->size == 'l')
-	{
-		for_Clc(args, help);
-		return ;
-	}
-	if (x != '\0')
-	{
-		str = ft_strnew(1);
-		str[0] = x;
-	}
-	else
-	{
-		str = ft_strnew(0);
-		str[0] = 'c';
-	}
 	if (help->zero == '0' && (ft_strlen(str) < (size_t)help->field)
 		&& help->minus == '0')
 		while (ft_strlen(str) < (size_t)help->field)
@@ -256,6 +234,29 @@ void		for_c(char c, va_list args, t_flags *help)
 	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(str, ft_strdup(" "));
+	return (str);
+}
+
+void		for_c(char c, va_list args, t_flags *help)
+{
+	char x;
+	char *str;
+
+	if (help->alarm == 1)
+		x = c;
+	if (help->size == '0' && help->alarm != 1)
+		x = (unsigned char)va_arg(args, void*);
+	if (x != '\0')
+	{
+		str = ft_strnew(1);
+		str[0] = x;
+	}
+	else
+	{
+		str = ft_strnew(0);
+		str[0] = 'c';
+	}
+	str = for_c_continue(help, str);
 	if (x == '\0')
 		putstr_c(str);
 	else
@@ -683,9 +684,9 @@ int		findout(char c, va_list args, t_flags *help, char *new)
 		for_s(args, help);
 	if (c == 'p')
 		for_p(args, help);
-	if (c == 'c')
+	if (c == 'c' && help->size != 'l')
 		for_c(0, args, help);
-	if (c == 'C')
+	if (c == 'C' || (c == 'c' && help->size == 'l'))
 		for_Clc(args, help);
 	if (c == 'S' || (c == 's' && help->size == 'l'))
 	 	for_Sls(args, help);
