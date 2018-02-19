@@ -531,13 +531,7 @@ void		for_s(va_list args, t_flags *help)
 {
 	char	*str;
 
-	if (help->size == '0')
-		str = va_arg(args, char*);
-	if (help->size == 'l')
-	{
-	 	for_Sls(args, help);
-	 	return ;
-	}
+	str = va_arg(args, char*);
 	if (str == NULL)
 		str = ft_strdup("(null)");
 	else
@@ -587,8 +581,6 @@ char		*for_idD_continue(t_flags *help, char *str, long int x)
 		&& (help->space == ' ' || x < 0 || help->plus == '+') && help->dot_ex != 1)
 		while (ft_strlen(str) < (size_t)help->field - 1)
 			str = ft_strjoin(ft_strdup("0"), str);
-	//printf("size = %c\n", help->size);
-	//printf("str = %s\n", str);
 	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
 		&& help->space != ' ' && help->plus != '+' && x >= 0 && help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field)
@@ -680,28 +672,34 @@ void		for_symbol(t_flags *help)
 	free(str);
 }
 
-int		findout(char c, va_list args, t_flags *help, char *new)
+void findout_cont(char c, va_list args, t_flags *help)
 {
-	if (c == '%')
-		for_symbol(help);
-	if (c == 'i' || c == 'd' || c == 'D')
-		for_idD(c, args, help);
-	if (c == 's')
-		for_s(args, help);
-	if (c == 'p')
-		for_p(args, help);
 	if (c == 'o' || c == 'O')
 		for_oO(c, args, help);
 	if (c == 'u' || c == 'U')
 		for_uU(c, args, help);
 	if (c == 'x' || c == 'X')
 		for_xX(c, args, help);
+}
+
+int		findout(char c, va_list args, t_flags *help, char *new)
+{
+	if (c == '%')
+		for_symbol(help);
+	if (c == 'i' || c == 'd' || c == 'D')
+		for_idD(c, args, help);
+	if (c == 's' && help->size == '0')
+		for_s(args, help);
+	if (c == 'p')
+		for_p(args, help);
 	if (c == 'c')
 		for_c(0, args, help);
 	if (c == 'C')
 		for_Clc(args, help);
-	if (c == 'S')
+	if (c == 'S' || (c == 's' && help->size == 'l'))
 	 	for_Sls(args, help);
+	if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X')
+		findout_cont(c, args, help);
 	if (help->result == -1)
 	{
 		free(new);
