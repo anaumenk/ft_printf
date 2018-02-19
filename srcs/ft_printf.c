@@ -6,7 +6,7 @@
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:22:54 by anaumenk          #+#    #+#             */
-/*   Updated: 2018/02/19 19:12:27 by anaumenk         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:14:48 by anaumenk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void for_Clc(va_list args, t_flags *help)
 		}
 }
 
-void	ft_putstr_с(char const *s)
+void	the_function(char *s)
 {
 	int i;
 
@@ -257,7 +257,7 @@ void		for_c(char c, va_list args, t_flags *help)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(str, ft_strdup(" "));
 	if (x == '\0')
-		ft_putstr_с(str);
+		the_function(str);
 	else
 		ft_putstr(str);
 	help->result += ft_strlen(str);
