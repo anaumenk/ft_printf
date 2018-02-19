@@ -300,7 +300,8 @@ char		*for_X_continue(uint64_t x, char *str, int i, t_flags *help)
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0)
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
+		&& help->hash != '#' && help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup("0"), str);
 	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
@@ -309,12 +310,6 @@ char		*for_X_continue(uint64_t x, char *str, int i, t_flags *help)
 			str = ft_strjoin(ft_strdup("0"), str);
 	if (help->hash == '#' && x != 0)
 		str = ft_strjoin(ft_strdup("0X"), str);
-	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(ft_strdup(" "), str);
-	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(str, ft_strdup(" "));
 	return (str);
 }
 
@@ -343,12 +338,6 @@ char		*for_x_continue(uint64_t x, char *str, int i, t_flags *help)
 			str = ft_strjoin(ft_strdup("0"), str);
 	if (help->hash == '#' && x != 0)
 		str = ft_strjoin(ft_strdup("0x"), str);
-	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(ft_strdup(" "), str);
-	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(str, ft_strdup(" "));
 	return (str);
 }
 
@@ -365,12 +354,16 @@ void		for_xX(char c, va_list args, t_flags *help)
 	while ((nb = nb / 16))
 		i++;
 	str = ft_strnew(i);
-	if ((x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0 && help->dot_ex != 0))))
+	if ((x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0 &&
+		help->dot_ex != 0))))
 		str[0] = '0';
-	if (c == 'x')
-		str = for_x_continue(x, str, i, help);
-	if (c == 'X')
-		str = for_X_continue(x, str, i, help);
+	str = (c == 'x') ? for_x_continue(x, str, i, help) : for_X_continue(x, str, i, help);
+	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(ft_strdup(" "), str);
+	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(str, ft_strdup(" "));
 	ft_putstr(str);
 	help->result += ft_strlen(str);
 	free(str);
