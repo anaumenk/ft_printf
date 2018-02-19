@@ -29,6 +29,34 @@ int unilen(unsigned int x)
 		return (4);
 }
 
+void uni_else(unsigned int x, t_flags *help)
+{
+	unsigned int nb;
+
+	nb = (x >> 18) | 240;
+	write(1, &nb, 1);
+	nb = (x << 14) >> 27 | 128;
+	write(1, &nb, 1);
+	nb = (x << 20) >> 26 | 128;
+	write(1, &nb, 1);
+	nb = (x << 26) >> 26 | 128;
+	write(1, &nb, 1);
+	help->result += 4;
+}
+
+void uni_else_if(unsigned int x, t_flags *help)
+{
+	unsigned int nb;
+
+	nb = (x >> 12) | 224;
+	write(1, &nb, 1);
+	nb = (x << 20) >> 26 | 128;
+	write(1, &nb, 1);
+	nb = (x << 26) >> 26 | 128;
+	write(1, &nb, 1);
+	help->result += 3;
+}
+
 void unicode(unsigned int x, t_flags *help)
 {
 	unsigned int nb;
@@ -53,27 +81,9 @@ void unicode(unsigned int x, t_flags *help)
 
  	}
 	else if (i > 11 && i <= 16)
-	{
-		nb = (x >> 12) | 224;
-		write(1, &nb, 1);
-		nb = (x << 20) >> 26 | 128;
-		write(1, &nb, 1);
-		nb = (x << 26) >> 26 | 128;
-		write(1, &nb, 1);
-		help->result += 3;
-	}
+		uni_else_if(x, help);
 	else
-	{
-		nb = (x >> 18) | 240;
-		write(1, &nb, 1);
-		nb = (x << 14) >> 27 | 128;
-		write(1, &nb, 1);
-		nb = (x << 20) >> 26 | 128;
-		write(1, &nb, 1);
-		nb = (x << 26) >> 26 | 128;
-		write(1, &nb, 1);
-		help->result += 4;
-	}
+		uni_else(x, help);
 }
 
 void for_Sls_cont_three(int i, wchar_t *x, t_flags *help)
