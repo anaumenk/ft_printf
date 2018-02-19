@@ -153,6 +153,31 @@ void for_Sls(va_list args, t_flags *help)
 
 }
 
+void for_Ccl_continue(t_flags *help, unsigned int x)
+{
+	if (help->minus == '0' && help->zero == '-' && unilen(x) < help->field)
+		while (unilen(x) != help->field)
+		{
+			write(1, " ", 1);
+			help->result++;
+			help->field--;
+		}
+	if (x == '\0')
+	{
+		write(1, "\0", 1);
+		help->result++;
+	}
+	else
+		unicode(x, help);
+	if (help->minus == '-' && unilen(x) < help->field)
+		while (unilen(x) != help->field)
+		{
+			write(1, " ", 1);
+			help->result++;
+			help->field--;
+		}
+}
+
 void for_Clc(va_list args, t_flags *help)
 {
 	unsigned int x;
@@ -178,29 +203,7 @@ void for_Clc(va_list args, t_flags *help)
 			help->result++;
 			help->field--;
 		}
-	if (help->minus == '0' && help->zero == '-' && unilen(x) < help->field)
-		while (unilen(x) != help->field)
-		{
-			write(1, " ", 1);
-			help->result++;
-			help->field--;
-		}
-	if (x == '\0')
-	{
-		write(1, "\0", 1);
-		help->result++;
-	}
-	else
-		unicode(x, help);
-	// if (MB_CUR_MAX == 1 && x > 256)
-	// 	return ;
-	if (help->minus == '-' && unilen(x) < help->field)
-		while (unilen(x) != help->field)
-		{
-			write(1, " ", 1);
-			help->result++;
-			help->field--;
-		}
+	for_Ccl_continue(help, x);
 }
 
 void	putstr_c( char *s)
