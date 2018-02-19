@@ -6,7 +6,7 @@
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2018/02/05 13:22:54 by anaumenk          #+#    #+#             */
-/*   Updated: 2018/02/19 19:14:48 by anaumenk         ###   ########.fr       */
+/*   Updated: 2018/02/19 19:19:07 by anaumenk         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -203,7 +203,7 @@ void for_Clc(va_list args, t_flags *help)
 		}
 }
 
-void	the_function(char *s)
+void	putstr_c( char *s)
 {
 	int i;
 
@@ -257,7 +257,7 @@ void		for_c(char c, va_list args, t_flags *help)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(str, ft_strdup(" "));
 	if (x == '\0')
-		the_function(str);
+		putstr_c(str);
 	else
 		ft_putstr(str);
 	help->result += ft_strlen(str);
@@ -680,28 +680,32 @@ void		for_symbol(t_flags *help)
 	free(str);
 }
 
-void		findout(char c, va_list args, t_flags *help)
+void		findout(char c, va_list args, t_flags *help, char *new)
 {
+	if (new == NULL)
+		return ;
 	if (c == '%')
 		for_symbol(help);
-	if (c == 'i' || c == 'd' || c == 'D')
+	else if (c == 'i' || c == 'd' || c == 'D')
 		for_idD(c, args, help);
-	if (c == 's')
+	else if (c == 's')
 		for_s(args, help);
-	if (c == 'p')
+	else if (c == 'p')
 		for_p(args, help);
-	if (c == 'o' || c == 'O')
+	else if (c == 'o' || c == 'O')
 		for_oO(c, args, help);
-	if (c == 'u' || c == 'U')
+	else if (c == 'u' || c == 'U')
 		for_uU(c, args, help);
-	if (c == 'x' || c == 'X')
+	else if (c == 'x' || c == 'X')
 		for_xX(c, args, help);
-	if (c == 'c')
+	else if (c == 'c')
 		for_c(0, args, help);
-	if (c == 'C')
+	else if (c == 'C')
 		for_Clc(args, help);
-	if (c == 'S')
+	else if (c == 'S')
 	 	for_Sls(args, help);
+	if (new != NULL)
+		free(new);
 }
 
 int			forsize(char *str, int i, t_flags *help)
@@ -796,28 +800,30 @@ int			fornb(char *str, int i, t_flags *help, va_list args)
 	return (i);
 }
 
-int			flags(char *str, va_list args, t_flags *help)
+int			flags(char *new, va_list args, t_flags *help)
 {
 	int i;
 
 	i = 0;
-	while (str[i])
+	if (new == NULL)
+		return (i);
+	while (new[i])
 	{
-		if (str[i] == '0')
+		if (new[i] == '0')
 			help->zero = '0';
-		else if ((str[i] >= '1' && str[i] <= '9') || str[i] == '*')
-			i = fornb(str, i, help, args);
-		else if (str[i] == '.')
-			i = fordot(str, i, help, args);
-		else if (str[i] == '%' || str[i] == '-' || str[i] == '+'
-			|| str[i] == ' ' || str[i] == '#' || SIZE(str[i]))
-			i = flags_continue(str, i, help);
-		else if (!(CONV(str[i])))
+		else if ((new[i] >= '1' && new[i] <= '9') || new[i] == '*')
+			i = fornb(new, i, help, args);
+		else if (new[i] == '.')
+			i = fordot(new, i, help, args);
+		else if (new[i] == '%' || new[i] == '-' || new[i] == '+'
+			|| new[i] == ' ' || new[i] == '#' || SIZE(new[i]))
+			i = flags_continue(new, i, help);
+		else if (!(CONV(new[i])))
 			return (i + 1);
 		else
 		{
 			help->alarm = 1;
-			for_c(str[i], args, help);
+			for_c(new[i], args, help);
 			return (i + 1);
 		}
 		i++;
@@ -863,11 +869,21 @@ void		init(t_flags *help)
 	help->dotzero = 0;
 }
 
+char *if_char(t_flags *help, char *new, char *str, int i)
+{
+	char *tmp;
+
+	init(help);
+	tmp = new;
+	new = conv_str(str, i + 1);
+	free(tmp);
+	return (new);
+}
+
 void		print_and_find(const char *format, va_list args, t_flags *help)
 {
 	char	*str;
 	char	*new;
-	char	*tmp;
 	int		i;
 
 	str = (char*)format;
@@ -877,31 +893,19 @@ void		print_and_find(const char *format, va_list args, t_flags *help)
 	{
 		if (str[i] == '%')
 		{
-			init(help);
-			tmp = new;
-			new = conv_str(str, i + 1);
-			free(tmp);
-			if (new != NULL)
-			{
-				i += flags(new, args, help);
-				findout(str[i], args, help);
-				if (help->result == -1)
-				{
-					if (new != NULL)
-						free(new);
-					return;
-				}
-			}
+			new = if_char(help, new, str, i);
+			i += flags(new, args, help);
+			findout(str[i], args, help, new);
+			if (help->result == -1)
+				return ;
 		}
 		else
 		{
 			write(1, &str[i], 1);
-			help->result += 1;
+			help->result++;
 		}
 		i++;
 	}
-	if (new != NULL)
-		free(new);
 }
 
 int			ft_printf(const char *format, ...)
