@@ -895,7 +895,7 @@ void		print_and_find(const char *format, va_list args, t_flags *help)
 		{
 			new = if_char(help, new, str, i);
 			i += (new != NULL) ? flags(new, args, help) : 0;
-			if (findout(str[i], args, help, new))
+			if (new != NULL && findout(str[i], args, help, new))
 					return;
 		}
 		else
