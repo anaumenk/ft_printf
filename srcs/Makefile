@@ -17,9 +17,11 @@ COLOR_YELLOW =  $(SWITCH)93m
 COLOR_GREEN =   $(SWITCH)34m
 COLOR_RED =     $(SWITCH)31m
 
-C_FILES =  ft_printf.c
+C_FILES =  ft_printf.c findout.c flags.c for_cC.c for_idD.c for_oOuU.c \
+for_Sls.c for_sp.c for_xX.c unicode.c
 
-O_FILES = ft_printf.o
+O_FILES = ft_printf.o findout.o flags.o for_cC.o for_idD.o for_oOuU.o \
+for_Sls.o for_sp.o for_xX.o unicode.o
 
 FLAGS = -Wall -Wextra -Werror
 
