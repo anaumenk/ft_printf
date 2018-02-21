@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   for_idD.c                                          :+:      :+:    :+:   */
+/*   for_id.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -35,18 +35,32 @@ char		*ft_itoa_ll(unsigned long long int n)
 	return (s);
 }
 
-char		*for_idD_continue(t_flags *help, char *str, long int x)
+char		*for_id_big_d_cont(t_flags *help, char *str)
 {
-	if (help->zero == '0' && help->minus == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
-		&& (help->space == ' ' || x < 0 || help->plus == '+') && help->dot_ex != 1)
+	if (help->minus == '0' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(ft_strdup(" "), str);
+	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(str, ft_strdup(" "));
+	return (str);
+}
+
+char		*for_id_big_d_continue(t_flags *help, char *str, long int x)
+{
+	if (help->zero == '0' && help->minus == '0' && ft_strlen(str) <
+		(size_t)help->field && help->dot == 0 && (help->space == ' ' || x < 0 ||
+			help->plus == '+') && help->dot_ex != 1)
 		while (ft_strlen(str) < (size_t)help->field - 1)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
-		&& help->space != ' ' && help->plus != '+' && x >= 0 && help->minus != '-')
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field &&
+		help->dot == 0 && help->space != ' ' && help->plus != '+' && x >= 0
+		&& help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
-		&& help->space != ' ' && help->plus == '+' && help->minus != '-')
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field
+		&& help->dot == 0 && help->space != ' ' && help->plus == '+'
+		&& help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field - 1)
 			str = ft_strjoin(ft_strdup("0"), str);
 	if (help->plus == '+' && x >= 0)
@@ -55,12 +69,7 @@ char		*for_idD_continue(t_flags *help, char *str, long int x)
 		str = ft_strjoin(ft_strdup(" "), str);
 	if (x < 0)
 		str = ft_strjoin(ft_strdup("-"), str);
-	if (help->minus == '0' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(ft_strdup(" "), str);
-	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
-		while (ft_strlen(str) < (size_t)help->field)
-			str = ft_strjoin(str, ft_strdup(" "));
+	str = for_id_big_d_cont(help, str);
 	return (str);
 }
 
@@ -85,7 +94,7 @@ long int	for_id_x(t_flags *help, va_list args)
 	return (x);
 }
 
-void		for_idD(char c, va_list args, t_flags *help)
+void		for_id_big_d(char c, va_list args, t_flags *help)
 {
 	long int	x;
 	char		*str;
@@ -102,12 +111,13 @@ void		for_idD(char c, va_list args, t_flags *help)
 		str = ft_itoa_ll(-x);
 	if (x == 0)
 		ft_bzero(str, ft_strlen(str));
-	if ((x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0 && help->dot_ex != 0))))
+	if ((x == 0 && ((help->dot == 0 && help->dot_ex == 0)
+		|| (help->dot != 0 && help->dot_ex != 0))))
 		str[0] = '0';
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	str = for_idD_continue(help, str, x);
+	str = for_id_big_d_continue(help, str, x);
 	ft_putstr(str);
 	help->result += ft_strlen(str);
 	free(str);

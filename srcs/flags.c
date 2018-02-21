@@ -77,7 +77,6 @@ int			fordot(char *str, int i, t_flags *help, va_list args)
 			help->dot = 0;
 			help->dot_ex = 0;
 		}
-
 		i++;
 	}
 	return (i);
@@ -91,7 +90,7 @@ int			fornb(char *str, int i, t_flags *help, va_list args)
 		if (help->field < 0)
 		{
 			help->minus = '-';
-			help->field = - help->field;
+			help->field = -help->field;
 		}
 		help->field = (help->field != 0) ? help->field : 0;
 	}
@@ -125,10 +124,10 @@ int			flags(char *str, va_list args, t_flags *help)
 		else
 		{
 			help->alarm = 1;
-			for_c(str[i], args, help);
+			for_c_big_c(str[i], args, help);
 			return (i + 1);
 		}
 		i++;
-	}	
+	}
 	return (i);
 }

@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   for_Sls.c                                          :+:      :+:    :+:   */
+/*   for_big_s_ls.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/ft_printf.h"
 
-void	for_Sls_cont_three(int i, wchar_t *x, t_flags *help)
+void	for_big_s_ls_cont_three(int i, wchar_t *x, t_flags *help)
 {
 	int j;
 
@@ -34,7 +34,7 @@ void	for_Sls_cont_three(int i, wchar_t *x, t_flags *help)
 	}
 }
 
-void	for_Sls_cont_two(int i, t_flags *help, wchar_t *x)
+void	for_big_s_ls_cont_two(int i, t_flags *help, wchar_t *x)
 {
 	if (i < help->field && help->zero == '-' && help->minus != '-')
 	{
@@ -54,10 +54,10 @@ void	for_Sls_cont_two(int i, t_flags *help, wchar_t *x)
 			help->result++;
 		}
 	}
-	for_Sls_cont_three(i, x, help);
+	for_big_s_ls_cont_three(i, x, help);
 }
 
-void	for_Sls_cont_one(t_flags *help, wchar_t *x)
+void	for_big_s_ls_cont_one(t_flags *help, wchar_t *x)
 {
 	int i;
 	int j;
@@ -82,10 +82,10 @@ void	for_Sls_cont_one(t_flags *help, wchar_t *x)
 			j++;
 		}
 	}
-	for_Sls_cont_two(i, help, x);
+	for_big_s_ls_cont_two(i, help, x);
 }
 
-void	for_Sls(va_list args, t_flags *help)
+void	for_big_s_ls(va_list args, t_flags *help)
 {
 	wchar_t *x;
 
@@ -101,5 +101,5 @@ void	for_Sls(va_list args, t_flags *help)
 		help->result += help->dot;
 	}
 	else
-		for_Sls_cont_one(help, x);
+		for_big_s_ls_cont_one(help, x);
 }

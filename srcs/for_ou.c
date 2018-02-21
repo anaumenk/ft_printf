@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   for_oOuU.c                                         :+:      :+:    :+:   */
+/*   for_ou.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/ft_printf.h"
 
-char		*for_uU_continue(uint64_t x, char *str, int i, t_flags *help)
+char		*for_u_big_u_continue(uint64_t x, char *str, int i, t_flags *help)
 {
 	char		*hex;
 	uint64_t	nb;
@@ -27,10 +27,12 @@ char		*for_uU_continue(uint64_t x, char *str, int i, t_flags *help)
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0)
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field
+		&& help->dot == 0)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
+	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) <
+		(size_t)help->field)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup(" "), str);
 	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
@@ -39,7 +41,7 @@ char		*for_uU_continue(uint64_t x, char *str, int i, t_flags *help)
 	return (str);
 }
 
-void		for_uU(char c, va_list args, t_flags *help)
+void		for_u_big_u(char c, va_list args, t_flags *help)
 {
 	char		*str;
 	uint64_t	x;
@@ -48,33 +50,35 @@ void		for_uU(char c, va_list args, t_flags *help)
 
 	i = 1;
 	if (c == 'u')
-		x = for_ouxX_x(help, args);
+		x = for_oux_big_x_x(help, args);
 	if (c == 'U')
 		x = va_arg(args, unsigned long int);
 	nb = x;
 	while ((nb = nb / 10))
 		i++;
 	str = ft_strnew(i);
-	if (x == 0 && ((help->dot == 0 && help->dot_ex == 0) || (help->dot != 0 && help->dot_ex != 0)))
+	if (x == 0 && ((help->dot == 0 && help->dot_ex == 0)
+		|| (help->dot != 0 && help->dot_ex != 0)))
 		str[0] = '0';
-	str = for_uU_continue(x, str, i, help);
+	str = for_u_big_u_continue(x, str, i, help);
 	ft_putstr(str);
 	help->result += ft_strlen(str);
 	free(str);
 }
 
-void		for_oO_continue(char *str, t_flags *help)
+void		for_o_big_o_continue(char *str, t_flags *help)
 {
 	if (help->hash == '#')
 		str = ft_strjoin(ft_strdup("0"), str);
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
-		&& help->minus != '-')
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field
+		&& help->dot == 0 && help->minus != '-')
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
+	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) <
+		(size_t)help->field)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup(" "), str);
 	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
@@ -85,7 +89,7 @@ void		for_oO_continue(char *str, t_flags *help)
 	free(str);
 }
 
-void		for_oO(char c, va_list args, t_flags *help)
+void		for_o_big_o(char c, va_list args, t_flags *help)
 {
 	uint64_t	nb;
 	uint64_t	x;
@@ -95,7 +99,7 @@ void		for_oO(char c, va_list args, t_flags *help)
 
 	hex = "01234567";
 	if (c == 'o')
-		x = for_ouxX_x(help, args);
+		x = for_oux_big_x_x(help, args);
 	if (c == 'O')
 		x = va_arg(args, uint64_t);
 	nb = x;
@@ -111,5 +115,5 @@ void		for_oO(char c, va_list args, t_flags *help)
 		str[--i] = hex[x % 8];
 		x = x / 8;
 	}
-	for_oO_continue(str, help);
+	for_o_big_o_continue(str, help);
 }

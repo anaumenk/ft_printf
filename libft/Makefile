@@ -10,13 +10,6 @@
 #                                                                              #
 # **************************************************************************** #
 
-SWITCH =        \033[
-STYLE_NORMAL =  $(SWITCH)0m
-STYLE_BOLD =    $(SWITCH)1m
-COLOR_YELLOW =  $(SWITCH)93m
-COLOR_GREEN =   $(SWITCH)34m
-COLOR_RED =     $(SWITCH)31m
-
 C_FILES = ft_atoi.c ft_bzero.c ft_extra_01.c ft_extra_02.c ft_extra_03.c \
 ft_extra_04.c ft_extra_05.c ft_extra_06.c ft_isalnum.c ft_isalpha.c \
 ft_isascii.c ft_isdigit.c ft_isprint.c ft_itoa.c ft_lstadd.c ft_lstdel.c \
@@ -47,16 +40,13 @@ FLAGS = -Wall -Wextra -Werror
 
 all: $(addprefix ../objects/,$(O_FILES))
 ../objects/%.o: %.c
-	@echo "$(STYLE_BOLD)$(COLOR_YELLOW) $< has been compiled.$(STYLE_NORMAL)"
 	@gcc -c $(FLAGS) $<  -I ../includes -o $@ 
 
 clean:
-	@echo "$(STYLE_BOLD)$(COLOR_RED)All the object files (libft) have been deleted.$(STYLE_NORMAL)"
 	@rm -rf $(addprefix ../objects/,$(O_FILES))
 
 fclean: clean
-	@echo "$(STYLE_BOLD)$(COLOR_RED)$(NAME) has been deleted.$(STYLE_NORMAL)"
-	
+
 re: fclean all
 
 .PHONY: clean all fclean re

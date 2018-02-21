@@ -17,12 +17,13 @@ char		*for_p_continue(char *str, t_flags *help)
 	if (help->dot != 0 && ft_strlen(str) < (size_t)help->dot)
 		while (ft_strlen(str) < (size_t)help->dot)
 			str = ft_strjoin(ft_strdup("0"), str);
-	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field && help->dot == 0
-		&& help->minus == '0')
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field
+		&& help->dot == 0 && help->minus == '0')
 		while (ft_strlen(str) < (size_t)help->field - 2)
 			str = ft_strjoin(ft_strdup("0"), str);
 	str = ft_strjoin(ft_strdup("0x"), str);
-	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) < (size_t)help->field)
+	if (help->minus == '0' && help->zero == '-' && ft_strlen(str) <
+		(size_t)help->field)
 		while (ft_strlen(str) < (size_t)help->field)
 			str = ft_strjoin(ft_strdup(" "), str);
 	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)

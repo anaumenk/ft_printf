@@ -10,33 +10,22 @@
 #                                                                              #
 # **************************************************************************** #
 
-SWITCH =        \033[
-STYLE_NORMAL =  $(SWITCH)0m
-STYLE_BOLD =    $(SWITCH)1m
-COLOR_YELLOW =  $(SWITCH)93m
-COLOR_GREEN =   $(SWITCH)34m
-COLOR_RED =     $(SWITCH)31m
+C_FILES =  ft_printf.c findout.c flags.c for_c.c for_id.c for_ou.c \
+for_big_s_ls.c for_sp.c for_x.c unicode.c for_n.c
 
-C_FILES =  ft_printf.c findout.c flags.c for_cC.c for_idD.c for_oOuU.c \
-for_Sls.c for_sp.c for_xX.c unicode.c
-
-O_FILES = ft_printf.o findout.o flags.o for_cC.o for_idD.o for_oOuU.o \
-for_Sls.o for_sp.o for_xX.o unicode.o
+O_FILES = ft_printf.o findout.o flags.o for_c.o for_id.o for_ou.o \
+for_big_s_ls.o for_sp.o for_x.o unicode.o for_n.o
 
 FLAGS = -Wall -Wextra -Werror
 
 all: $(addprefix ../objects/,$(O_FILES))
 ../objects/%.o: %.c
-	@echo "$(STYLE_BOLD)$(COLOR_GREEN) $< has been compiled.$(STYLE_NORMAL)"
 	@gcc -c $(FLAGS) $<  -I ../includes -o $@ 
 
 clean:
-	@echo "$(STYLE_BOLD)$(COLOR_RED)All the object files (ft_printf)\
-	have been deleted.$(STYLE_NORMAL)"
 	@rm -rf $(addprefix ../objects/,$(O_FILES))
 
 fclean: clean
-	@echo "$(STYLE_BOLD)$(COLOR_RED)$(NAME) has been deleted.$(STYLE_NORMAL)"
 
 re: fclean all
 

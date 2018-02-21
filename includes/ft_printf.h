@@ -46,5 +46,20 @@ typedef struct	s_flags
 }				t_flags;
 
 int				ft_printf(const char *format, ...);
+int				flags(char *str, va_list args, t_flags *help);
+int				findout(char c, va_list args, t_flags *help, char *new);
+void			for_id_big_d(char c, va_list args, t_flags *help);
+void			for_s(va_list args, t_flags *help);
+char			*for_p_continue(char *str, t_flags *help);
+uint64_t		for_oux_big_x_x(t_flags *help, va_list args);
+void			for_o_big_o(char c, va_list args, t_flags *help);
+void			for_u_big_u(char c, va_list args, t_flags *help);
+void			for_x_big_x(char c, va_list args, t_flags *help);
+void			for_c_big_c(char c, va_list args, t_flags *help);
+void			for_big_clc(va_list args, t_flags *help);
+void			for_big_s_ls(va_list args, t_flags *help);
+void			unicode(unsigned int x, t_flags *help);
+void			for_p(va_list args, t_flags *help);
+int				unilen(unsigned int x);
 
 #endif

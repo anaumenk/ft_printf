@@ -50,7 +50,7 @@ void		init(t_flags *help)
 	help->dotzero = 0;
 }
 
-char *if_char(t_flags *help, char *new, char *str, int i)
+char		*if_char(t_flags *help, char *new, char *str, int i)
 {
 	char *tmp;
 
@@ -77,7 +77,7 @@ void		print_and_find(const char *format, va_list args, t_flags *help)
 			new = if_char(help, new, str, i);
 			i += (new != NULL) ? flags(new, args, help) : 0;
 			if (new != NULL && findout(str[i], args, help, new))
-					return;
+				return ;
 		}
 		else
 		{

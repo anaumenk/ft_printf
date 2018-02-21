@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   for_cC.c                                           :+:      :+:    :+:   */
+/*   for_c.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: anaumenk <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -12,7 +12,7 @@
 
 #include "../includes/ft_printf.h"
 
-void for_Ccl_continue(t_flags *help, unsigned int x)
+void	for_big_c_cl_continue(t_flags *help, unsigned int x)
 {
 	if (help->minus == '0' && help->zero == '-' && unilen(x) < help->field)
 		while (unilen(x) != help->field)
@@ -37,7 +37,7 @@ void for_Ccl_continue(t_flags *help, unsigned int x)
 		}
 }
 
-void for_Clc(va_list args, t_flags *help)
+void	for_big_clc(va_list args, t_flags *help)
 {
 	unsigned int x;
 
@@ -62,10 +62,10 @@ void for_Clc(va_list args, t_flags *help)
 			help->result++;
 			help->field--;
 		}
-	for_Ccl_continue(help, x);
+	for_big_c_cl_continue(help, x);
 }
 
-void	putstr_c( char *s)
+void	putstr_c(char *s)
 {
 	int i;
 
@@ -76,14 +76,14 @@ void	putstr_c( char *s)
 		{
 			if (s[i] == 'c')
 				write(1, "\0", 1);
-			else 
+			else
 				write(1, &s[i], 1);
 			i++;
 		}
 	}
 }
 
-char		*for_c_continue(t_flags *help, char *str)
+char	*for_c_continue(t_flags *help, char *str)
 {
 	if (help->zero == '0' && (ft_strlen(str) < (size_t)help->field)
 		&& help->minus == '0')
@@ -99,7 +99,7 @@ char		*for_c_continue(t_flags *help, char *str)
 	return (str);
 }
 
-void		for_c(char c, va_list args, t_flags *help)
+void	for_c_big_c(char c, va_list args, t_flags *help)
 {
 	char x;
 	char *str;
