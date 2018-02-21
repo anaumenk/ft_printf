@@ -23,7 +23,8 @@
 # define CONV1(x) (x != 's' && x != 'S' && x != 'p' && x != 'd' && x != 'D')
 # define CONV2(x) (x != 'i' && x != 'o' && x != 'O' && x != 'u' && x != 'U')
 # define CONV3(x) (x != 'x' && x != 'X' && x != 'c' && x != 'C' && x != '%')
-# define CONV(x) (CONV1(x) && CONV2(x) && CONV3(x))
+# define CONV4(x) (x != 'n')
+# define CONV(x) (CONV1(x) && CONV2(x) && CONV3(x) && CONV4(x))
 # define SIZE(x) (x == 'l' || x == 'h' || x == 'j' || x == 'z')
 # define FLAG1(x) (x == '+' || x == '-' || x == '.' || x == '*' || x == '#')
 # define FLAG2(x) ((x >= '0' && x <= '9') || x == ' ' || SIZE(x))
@@ -61,5 +62,6 @@ void			for_big_s_ls(va_list args, t_flags *help);
 void			unicode(unsigned int x, t_flags *help);
 void			for_p(va_list args, t_flags *help);
 int				unilen(unsigned int x);
+void			for_n(va_list args, t_flags *help);
 
 #endif

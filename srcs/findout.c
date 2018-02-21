@@ -41,6 +41,8 @@ void	findout_cont(char c, va_list args, t_flags *help)
 		for_u_big_u(c, args, help);
 	if (c == 'x' || c == 'X')
 		for_x_big_x(c, args, help);
+	if (c == 'n')
+		for_n(args, help);
 }
 
 int		findout(char c, va_list args, t_flags *help, char *new)
@@ -59,7 +61,8 @@ int		findout(char c, va_list args, t_flags *help, char *new)
 		for_big_clc(args, help);
 	if (c == 'S' || (c == 's' && help->size == 'l'))
 		for_big_s_ls(args, help);
-	if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X')
+	if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X'
+		|| c == 'n')
 		findout_cont(c, args, help);
 	if (help->result == -1)
 	{
