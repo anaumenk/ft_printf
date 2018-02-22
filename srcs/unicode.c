@@ -35,7 +35,7 @@ void	uni_else(unsigned int x, t_flags *help)
 
 	nb = (x >> 18) | 240;
 	write(1, &nb, 1);
-	nb = (x << 14) >> 27 | 128;
+	nb = (x << 14) >> 26 | 128;
 	write(1, &nb, 1);
 	nb = (x << 20) >> 26 | 128;
 	write(1, &nb, 1);

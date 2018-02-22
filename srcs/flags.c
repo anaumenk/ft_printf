@@ -40,7 +40,7 @@ int			forsize(char *str, int i, t_flags *help)
 	return (i);
 }
 
-int			flags_continue(char *str, int i, t_flags *help)
+int			flags_continue(char *str, int i, t_flags *help, va_list args)
 {
 	if (str[i] == '%')
 		return (i);
@@ -54,6 +54,8 @@ int			flags_continue(char *str, int i, t_flags *help)
 		help->hash = '#';
 	if (SIZE(str[i]))
 		i = forsize(str, i, help);
+	if (str[i] == '{')
+		flag_color(help, args);
 	return (i);
 }
 
@@ -117,14 +119,14 @@ int			flags(char *str, va_list args, t_flags *help)
 		else if (str[i] == '.')
 			i = fordot(str, i, help, args);
 		else if (str[i] == '%' || str[i] == '-' || str[i] == '+'
-			|| str[i] == ' ' || str[i] == '#' || SIZE(str[i]))
-			i = flags_continue(str, i, help);
+			|| str[i] == ' ' || str[i] == '#' || SIZE(str[i]) || str[i] == '{')
+			i = flags_continue(str, i, help, args);
 		else if (!(CONV(str[i])))
 			return (i + 1);
 		else
 		{
 			help->alarm = 1;
-			for_c_big_c(str[i], args, help);
+			for_c(str[i], args, help);
 			return (i + 1);
 		}
 		i++;

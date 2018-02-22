@@ -11,10 +11,10 @@
 # **************************************************************************** #
 
 C_FILES =  ft_printf.c findout.c flags.c for_c.c for_id.c for_ou.c \
-for_big_s_ls.c for_sp.c for_x.c unicode.c for_n.c
+for_big_s_ls.c for_sp.c for_x.c unicode.c for_n.c color.c
 
 O_FILES = ft_printf.o findout.o flags.o for_c.o for_id.o for_ou.o \
-for_big_s_ls.o for_sp.o for_x.o unicode.o for_n.o
+for_big_s_ls.o for_sp.o for_x.o unicode.o for_n.o color.o
 
 FLAGS = -Wall -Wextra -Werror
 

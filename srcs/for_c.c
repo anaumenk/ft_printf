@@ -53,8 +53,6 @@ void	for_big_clc(va_list args, t_flags *help)
 		help->result = -1;
 		return ;
 	}
-	if (MB_CUR_MAX == 1 && x > 256)
-		return ;
 	if (help->zero == '0' && (unilen(x) < help->field) && help->minus == '0')
 		while (unilen(x) != help->field)
 		{
@@ -99,14 +97,14 @@ char	*for_c_continue(t_flags *help, char *str)
 	return (str);
 }
 
-void	for_c_big_c(char c, va_list args, t_flags *help)
+void	for_c(char c, va_list args, t_flags *help)
 {
 	char x;
 	char *str;
 
 	if (help->alarm == 1)
 		x = c;
-	if (help->size == '0' && help->alarm != 1)
+	else
 		x = (unsigned char)va_arg(args, void*);
 	if (x != '\0')
 	{

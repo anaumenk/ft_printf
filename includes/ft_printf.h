@@ -27,7 +27,7 @@
 # define CONV(x) (CONV1(x) && CONV2(x) && CONV3(x) && CONV4(x))
 # define SIZE(x) (x == 'l' || x == 'h' || x == 'j' || x == 'z')
 # define FLAG1(x) (x == '+' || x == '-' || x == '.' || x == '*' || x == '#')
-# define FLAG2(x) ((x >= '0' && x <= '9') || x == ' ' || SIZE(x))
+# define FLAG2(x) ((x >= '0' && x <= '9') || x == ' ' || SIZE(x) || x == '{')
 # define FLAGS(x) (FLAG1(x) || FLAG2(x))
 
 typedef struct	s_flags
@@ -44,6 +44,7 @@ typedef struct	s_flags
 	int		dot_ex;
 	int		alarm;
 	int		dotzero;
+	char	color;
 }				t_flags;
 
 int				ft_printf(const char *format, ...);
@@ -56,12 +57,14 @@ uint64_t		for_oux_big_x_x(t_flags *help, va_list args);
 void			for_o_big_o(char c, va_list args, t_flags *help);
 void			for_u_big_u(char c, va_list args, t_flags *help);
 void			for_x_big_x(char c, va_list args, t_flags *help);
-void			for_c_big_c(char c, va_list args, t_flags *help);
+void			for_c(char c, va_list args, t_flags *help);
 void			for_big_clc(va_list args, t_flags *help);
 void			for_big_s_ls(va_list args, t_flags *help);
 void			unicode(unsigned int x, t_flags *help);
 void			for_p(va_list args, t_flags *help);
 int				unilen(unsigned int x);
 void			for_n(va_list args, t_flags *help);
+void			flag_color(t_flags *help, va_list args);
+void			color_on(t_flags *help);
 
 #endif

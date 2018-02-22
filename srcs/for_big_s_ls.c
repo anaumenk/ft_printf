@@ -85,21 +85,34 @@ void	for_big_s_ls_cont_one(t_flags *help, wchar_t *x)
 	for_big_s_ls_cont_two(i, help, x);
 }
 
+void for_null_s(t_flags *help)
+{
+	char *str;
+
+	str = ft_strdup("(null)");
+	if (ft_strlen(str) > (size_t)help->dot && help->dot_ex == 1)
+		str = ft_strsub(str, 0, help->dot);
+	if (help->minus == '-' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(str, ft_strdup(" "));
+	if (ft_strlen(str) < (size_t)help->field && help->zero == '-')
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(ft_strdup(" "), str);
+	if (help->zero == '0' && ft_strlen(str) < (size_t)help->field)
+		while (ft_strlen(str) < (size_t)help->field)
+			str = ft_strjoin(ft_strdup("0"), str);
+	ft_putstr(str);
+	help->result += ft_strlen(str);
+	free(str);
+}
+
 void	for_big_s_ls(va_list args, t_flags *help)
 {
 	wchar_t *x;
 
 	x = va_arg(args, wchar_t*);
-	if (x == NULL && (help->dot_ex != 1 || help->dot >= 6))
-	{
-		write(1, "(null)", 6);
-		help->result += 6;
-	}
-	else if (x == NULL)
-	{
-		write(1, "(null)", help->dot);
-		help->result += help->dot;
-	}
+	if (x == NULL)
+		for_null_s(help);
 	else
 		for_big_s_ls_cont_one(help, x);
 }

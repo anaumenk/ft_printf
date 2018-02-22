@@ -35,6 +35,8 @@ void	for_symbol(t_flags *help)
 
 void	findout_cont(char c, va_list args, t_flags *help)
 {
+	if (c == 's' && help->size != 'l')
+		for_s(args, help);
 	if (c == 'o' || c == 'O')
 		for_o_big_o(c, args, help);
 	if (c == 'u' || c == 'U')
@@ -47,23 +49,25 @@ void	findout_cont(char c, va_list args, t_flags *help)
 
 int		findout(char c, va_list args, t_flags *help, char *new)
 {
+	if (help->color != '0')
+		color_on(help);
 	if (c == '%')
 		for_symbol(help);
 	if (c == 'i' || c == 'd' || c == 'D')
 		for_id_big_d(c, args, help);
-	if (c == 's' && help->size == '0')
-		for_s(args, help);
 	if (c == 'p')
 		for_p(args, help);
 	if (c == 'c' && help->size != 'l')
-		for_c_big_c(0, args, help);
+		for_c(0, args, help);
 	if (c == 'C' || (c == 'c' && help->size == 'l'))
 		for_big_clc(args, help);
 	if (c == 'S' || (c == 's' && help->size == 'l'))
 		for_big_s_ls(args, help);
 	if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X'
-		|| c == 'n')
+		|| c == 'n' || (c == 's' && help->size != 'l'))
 		findout_cont(c, args, help);
+	if (help->color != '0')
+		ft_putstr("\033[37m");
 	if (help->result == -1)
 	{
 		free(new);

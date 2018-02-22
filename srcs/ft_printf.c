@@ -48,6 +48,7 @@ void		init(t_flags *help)
 	help->size = '0';
 	help->alarm = 0;
 	help->dotzero = 0;
+	help->color = '0';
 }
 
 char		*if_char(t_flags *help, char *new, char *str, int i)
