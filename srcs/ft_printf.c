@@ -12,19 +12,43 @@
 
 #include "../includes/ft_printf.h"
 
+char		*strjoin(char *str, char c)
+{
+	char	*new;
+	int		i;
+	int		j;
+
+	i = 0;
+	j = 0;
+	if (str == NULL)
+		return (NULL);
+	new = (char*)malloc(sizeof(char) * ft_strlen(str) + 2);
+	if (new == NULL)
+		return (NULL);
+	while (str[j])
+	{
+		new[j] = str[j];
+		j++;
+	}
+	new[j] = c;
+	new[j + 1] = '\0';
+	free((char*)str);
+	return (new);
+}
+
 char		*conv_str(char *str, int i)
 {
 	char	*new;
 	int		j;
 
 	j = i;
-	if (str[i] == '\0')
+	if (str[i] == '\0' || (!FLAGS(str[i]) && !SIZE(str[i]) && CONV(str[i])))
 		return (NULL);
-	while (FLAGS(str[i]))
+	while (FLAGS(str[i]) || SIZE(str[i]))
 		i++;
 	new = ft_strnew((size_t)i - j);
 	i = 0;
-	while (FLAGS(str[j]))
+	while (FLAGS(str[j]) || SIZE(str[j]))
 	{
 		new[i] = str[j];
 		i++;
@@ -35,8 +59,10 @@ char		*conv_str(char *str, int i)
 	return (new);
 }
 
-void		init(t_flags *help)
+char		*init(t_flags *help, char *new, char *str, int i)
 {
+	char *tmp;
+
 	help->field = 0;
 	help->hash = '0';
 	help->space = '0';
@@ -49,13 +75,6 @@ void		init(t_flags *help)
 	help->alarm = 0;
 	help->dotzero = 0;
 	help->color = '0';
-}
-
-char		*if_char(t_flags *help, char *new, char *str, int i)
-{
-	char *tmp;
-
-	init(help);
 	tmp = new;
 	new = conv_str(str, i + 1);
 	free(tmp);
@@ -64,31 +83,31 @@ char		*if_char(t_flags *help, char *new, char *str, int i)
 
 void		print_and_find(const char *format, va_list args, t_flags *help)
 {
-	char	*str;
-	char	*new;
 	int		i;
 
-	str = (char*)format;
-	new = NULL;
+	help->new = NULL;
+	help->str = ft_strnew(0);
 	i = 0;
-	while (str[i])
+	while (format[i])
 	{
-		if (str[i] == '%')
+		if (format[i] == '%')
 		{
-			new = if_char(help, new, str, i);
-			i += (new != NULL) ? flags(new, args, help) : 0;
-			if (new != NULL && findout(str[i], args, help, new))
+			help->new = init(help, help->new, (char*)format, i);
+			i += (help->new != NULL) ? flags(help->new, args, help) : 0;
+			if (help->new != NULL && findout(format[i], args, help))
 				return ;
 		}
 		else
 		{
-			write(1, &str[i], 1);
+			help->str = strjoin(help->str, format[i]);
 			help->result += 1;
 		}
 		i++;
 	}
-	if (new != NULL)
-		free(new);
+	ft_putstr(help->str);
+	free(help->str);
+	if (help->new != NULL)
+		free(help->new);
 }
 
 int			ft_printf(const char *format, ...)

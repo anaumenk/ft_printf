@@ -45,11 +45,13 @@ typedef struct	s_flags
 	int		alarm;
 	int		dotzero;
 	char	color;
+	char	*new;
+	char	*str;
 }				t_flags;
 
 int				ft_printf(const char *format, ...);
 int				flags(char *str, va_list args, t_flags *help);
-int				findout(char c, va_list args, t_flags *help, char *new);
+int				findout(char c, va_list args, t_flags *help);
 void			for_id_big_d(char c, va_list args, t_flags *help);
 void			for_s(va_list args, t_flags *help);
 char			*for_p_continue(char *str, t_flags *help);

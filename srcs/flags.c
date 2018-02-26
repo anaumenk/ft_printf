@@ -40,25 +40,6 @@ int			forsize(char *str, int i, t_flags *help)
 	return (i);
 }
 
-int			flags_continue(char *str, int i, t_flags *help, va_list args)
-{
-	if (str[i] == '%')
-		return (i);
-	if (str[i] == '-')
-		help->minus = '-';
-	if (str[i] == '+')
-		help->plus = '+';
-	if (str[i] == ' ')
-		help->space = ' ';
-	if (str[i] == '#')
-		help->hash = '#';
-	if (SIZE(str[i]))
-		i = forsize(str, i, help);
-	if (str[i] == '{')
-		flag_color(help, args);
-	return (i);
-}
-
 int			fordot(char *str, int i, t_flags *help, va_list args)
 {
 	help->dot_ex = 1;
@@ -81,6 +62,27 @@ int			fordot(char *str, int i, t_flags *help, va_list args)
 		}
 		i++;
 	}
+	return (i);
+}
+
+int			flags_continue(char *str, int i, t_flags *help, va_list args)
+{
+	if (str[i] == '.')
+		i = fordot(str, i, help, args);
+	if (str[i] == '%')
+		return (i);
+	if (str[i] == '-')
+		help->minus = '-';
+	if (str[i] == '+')
+		help->plus = '+';
+	if (str[i] == ' ')
+		help->space = ' ';
+	if (str[i] == '#')
+		help->hash = '#';
+	if (SIZE(str[i]))
+		i = forsize(str, i, help);
+	if (str[i] == '{')
+		flag_color(help, args);
 	return (i);
 }
 
@@ -116,16 +118,16 @@ int			flags(char *str, va_list args, t_flags *help)
 			help->zero = '0';
 		else if ((str[i] >= '1' && str[i] <= '9') || str[i] == '*')
 			i = fornb(str, i, help, args);
-		else if (str[i] == '.')
-			i = fordot(str, i, help, args);
 		else if (str[i] == '%' || str[i] == '-' || str[i] == '+'
-			|| str[i] == ' ' || str[i] == '#' || SIZE(str[i]) || str[i] == '{')
+			|| str[i] == '.' || str[i] == ' ' || str[i] == '#' || SIZE(str[i])
+			|| str[i] == '{')
 			i = flags_continue(str, i, help, args);
 		else if (!(CONV(str[i])))
 			return (i + 1);
 		else
 		{
 			help->alarm = 1;
+			ft_putstr(help->str);
 			for_c(str[i], args, help);
 			return (i + 1);
 		}

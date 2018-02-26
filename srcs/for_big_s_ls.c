@@ -85,7 +85,7 @@ void	for_big_s_ls_cont_one(t_flags *help, wchar_t *x)
 	for_big_s_ls_cont_two(i, help, x);
 }
 
-void for_null_s(t_flags *help)
+void	for_null_s(t_flags *help)
 {
 	char *str;
 
@@ -111,6 +111,21 @@ void	for_big_s_ls(va_list args, t_flags *help)
 	wchar_t *x;
 
 	x = va_arg(args, wchar_t*);
+	if (MB_CUR_MAX == 1)
+	{
+		while (*x)
+		{
+			if (*x > 255)
+			{
+				help->result = -1;
+				return ;
+			}
+			x++;
+		}
+	}
+	ft_putstr(help->str);
+	if (help->color != '0')
+		color_on(help);
 	if (x == NULL)
 		for_null_s(help);
 	else

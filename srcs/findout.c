@@ -37,40 +37,45 @@ void	findout_cont(char c, va_list args, t_flags *help)
 {
 	if (c == 's' && help->size != 'l')
 		for_s(args, help);
-	if (c == 'o' || c == 'O')
+	else if (c == 'o' || c == 'O')
 		for_o_big_o(c, args, help);
-	if (c == 'u' || c == 'U')
+	else if (c == 'u' || c == 'U')
 		for_u_big_u(c, args, help);
-	if (c == 'x' || c == 'X')
+	else if (c == 'x' || c == 'X')
 		for_x_big_x(c, args, help);
-	if (c == 'n')
+	else if (c == 'n')
 		for_n(args, help);
+	else if (c == 'i' || c == 'd' || c == 'D')
+		for_id_big_d(c, args, help);
+	else if (c == 'p')
+		for_p(args, help);
+	else if (c == 'c' && help->size != 'l')
+		for_c(0, args, help);
 }
 
-int		findout(char c, va_list args, t_flags *help, char *new)
+int		findout(char c, va_list args, t_flags *help)
 {
+	if (c == 'S' || (c == 's' && help->size == 'l'))
+		for_big_s_ls(args, help);
+	else if (c == 'C' || (c == 'c' && help->size == 'l'))
+		for_big_clc(args, help);
+	else if (help->alarm != 1)
+		ft_putstr(help->str);
 	if (help->color != '0')
 		color_on(help);
 	if (c == '%')
 		for_symbol(help);
-	if (c == 'i' || c == 'd' || c == 'D')
-		for_id_big_d(c, args, help);
-	if (c == 'p')
-		for_p(args, help);
-	if (c == 'c' && help->size != 'l')
-		for_c(0, args, help);
-	if (c == 'C' || (c == 'c' && help->size == 'l'))
-		for_big_clc(args, help);
-	if (c == 'S' || (c == 's' && help->size == 'l'))
-		for_big_s_ls(args, help);
-	if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x' || c == 'X'
-		|| c == 'n' || (c == 's' && help->size != 'l'))
+	else if (c == 'o' || c == 'O' || c == 'u' || c == 'U' || c == 'x'
+		|| c == 'X' || c == 'n' || (c == 's' && help->size != 'l') || c == 'i'
+		|| c == 'd' || c == 'D' || (c == 'c' && help->size != 'l') || c == 'p')
 		findout_cont(c, args, help);
 	if (help->color != '0')
 		ft_putstr("\033[37m");
+	ft_bzero(help->str, ft_strlen(help->str));
 	if (help->result == -1)
 	{
-		free(new);
+		free(help->str);
+		free(help->new);
 		return (1);
 	}
 	return (0);
