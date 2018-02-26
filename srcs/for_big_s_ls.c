@@ -113,7 +113,7 @@ void	for_big_s_ls(va_list args, t_flags *help)
 
 	i = 0;
 	x = va_arg(args, wchar_t*);
-	if (MB_CUR_MAX == 1)
+	if (MB_CUR_MAX == 1 && x != NULL)
 	{
 		while (x[i])
 		{
