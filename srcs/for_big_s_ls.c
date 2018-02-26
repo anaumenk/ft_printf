@@ -109,18 +109,20 @@ void	for_null_s(t_flags *help)
 void	for_big_s_ls(va_list args, t_flags *help)
 {
 	wchar_t *x;
+	int		i;
 
+	i = 0;
 	x = va_arg(args, wchar_t*);
 	if (MB_CUR_MAX == 1)
 	{
-		while (*x)
+		while (x[i])
 		{
-			if (*x > 255)
+			if (x[i] > 255)
 			{
 				help->result = -1;
 				return ;
 			}
-			x++;
+			i++;
 		}
 	}
 	ft_putstr(help->str);
