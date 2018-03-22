@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/ft_printf.h"
+#include "../includes/libft.h"
 
 void	flag_color(t_flags *help, va_list args)
 {
@@ -40,7 +40,7 @@ void	color_on(t_flags *help)
 	else if (help->color == 'r')
 		ft_putstr("\033[31m");
 	else if (help->color == 'g')
-		ft_putstr("\033[33m");
+		ft_putstr("\033[32m");
 	else if (help->color == 'y')
 		ft_putstr("\033[33m");
 	else if (help->color == 'B')
